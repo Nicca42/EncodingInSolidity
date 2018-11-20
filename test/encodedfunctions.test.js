@@ -74,6 +74,15 @@ contract('EncodedFunctions', (accounts) => {
         assert.equal(running, true, "The function ran");
     });
 
+    it("Separation of encoded function and call data", async () => {
+        encodedFunctions = await EncodedFunctions.new({from: owner});
+        let abiSignature = web3Abi.encodeFunctionSignature('toEncode(uint8)')
+        let encodedValue = web3Abi.encodeParameter('uint8', 86);
+        await encodedFunctions.seperationOfCallDataAndFunction(abiSignature, encodedValue);
+        let running = await encodedFunctions.run();
+        assert.equal(running, true, "The function ran");
+    });
+
     it("Encoding multiple parameters", async () => {
         encodedFunctions = await EncodedFunctions.new({from: owner});
         let runningBefore = await encodedFunctions.lopRun();
